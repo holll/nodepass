@@ -36,15 +36,7 @@ builds:
 archives:
   - id: default
     formats: [tar.gz]
-    name_template: >-
-      {{ .ProjectName }}_
-      {{ .Version }}_
-      {{ .Os }}_
-      {{- if eq .Arch "arm" }}
-        armv{{ .Arm }}
-      {{- else }}
-        {{ .Arch }}
-      {{- end }}
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ if eq .Arch \"arm\" }}armv{{ .Arm }}{{ else }}{{ .Arch }}{{ end }}"
 
 release:
   prerelease: true
