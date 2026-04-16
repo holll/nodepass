@@ -1,14 +1,15 @@
 version: 2
 
 builds:
-  - env:
+  - id: default
+    env:
       - CGO_ENABLED=0
     main: ./cmd/nodepass
     goos:
-      - darwin
-      - freebsd
       - linux
       - windows
+      - darwin
+      - freebsd
     goarch:
       - amd64
       - arm64
@@ -17,8 +18,34 @@ builds:
     ldflags:
       - -s -w -X main.version={{ .Tag }}
 
+  - id: linux_armv7
+    env:
+      - CGO_ENABLED=0
+    main: ./cmd/nodepass
+    goos:
+      - linux
+    goarch:
+      - arm
+    goarm:
+      - 7
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w -X main.version={{ .Tag }}
+
 archives:
-  - formats: [tar.gz]
+  - id: default
+    formats: [tar.gz]
+    name_template: >-
+      {{ .ProjectName }}_
+      {{ .Version }}_
+      {{ .Os }}_
+      {{- if eq .Arch "arm" }}
+        armv{{ .Arm }}
+      {{- else }}
+        {{ .Arch }}
+      {{- end }}
+
 release:
   prerelease: true
   mode: replace
