@@ -89,6 +89,7 @@ type Common struct {
 	slotLimit        int32
 	tcpSlot          int32
 	udpSlot          int32
+	_                int32
 	tcpRX            uint64
 	tcpTX            uint64
 	udpRX            uint64
